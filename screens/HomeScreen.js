@@ -8,6 +8,34 @@ import {
   Image,
   Button,
 } from "react-native";
+import ProductCard from "../components/ProductCard";
+
+const products = [
+  {
+    id: 1,
+    title: "Schoolhoodie BA",
+    description: "Warme hoodie met Busleyden Atheneum logo.",
+    price: "EUR 35",
+    category: "Kleding",
+    image: require("../assets/school.webp"),
+  },
+  {
+    id: 2,
+    title: "Drinkbus",
+    description: "Herbruikbare drinkbus voor elke schooldag.",
+    price: "EUR 12",
+    category: "Accessoires",
+    image: require("../assets/school.webp"),
+  },
+  {
+    id: 3,
+    title: "Turnzak",
+    description: "Praktische sportzak voor de lessen LO.",
+    price: "EUR 15",
+    category: "Sport",
+    image: require("../assets/school.webp"),
+  },
+];
 
 const HomeScreen = () => {
   return (
@@ -33,6 +61,24 @@ const HomeScreen = () => {
           color="#1f4432"
           onPress={() => console.log("Start app")}
         />
+      </View>
+
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Webshop</Text>
+        <Text style={styles.sectionText}>Een paar producten uit de schoolshop.</Text>
+      </View>
+
+      <View style={styles.grid}>
+        {products.map((product) => (
+          <ProductCard
+            key={product.id}
+            title={product.title}
+            description={product.description}
+            price={product.price}
+            category={product.category}
+            image={product.image}
+          />
+        ))}
       </View>
     </ScrollView>
   );
@@ -85,6 +131,25 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
     marginBottom: 16,
+  },
+  sectionHeader: {
+    marginTop: 22,
+    marginBottom: 14,
+  },
+  sectionTitle: {
+    color: "#111827",
+    fontSize: 24,
+    fontWeight: "800",
+    marginBottom: 4,
+  },
+  sectionText: {
+    color: "#4b5563",
+    fontSize: 14,
+  },
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
 });
 
