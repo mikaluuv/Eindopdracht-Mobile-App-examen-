@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   link: {
-    color: "#1f4432",
+    color: "#87BD25",
     fontWeight: "800",
     fontSize: 12,
   },

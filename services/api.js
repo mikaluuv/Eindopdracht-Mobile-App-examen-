@@ -213,7 +213,7 @@ export const fetchCampuses = async () => {
         ["korte-beschrijving", "beschrijving", "description"],
         `Meer info over ${name}.`,
       ),
-      color: campusColors[name] || "#1f4432",
+      color: campusColors[name] || "#87BD25",
     };
   });
 };

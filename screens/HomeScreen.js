@@ -24,7 +24,8 @@ const products = [
     price: "EUR 35",
     priceNumber: 35,
     category: "Kleding",
-    details: "Deze hoodie is ideaal voor schooldagen, uitstappen en sportieve activiteiten.",
+    details:
+      "Deze hoodie is ideaal voor schooldagen, uitstappen en sportieve activiteiten.",
     image: require("../assets/school.webp"),
   },
   {
@@ -126,7 +127,8 @@ const news = [
     description: "Kom kennismaken met onze campussen en richtingen.",
     date: "12 mei 2026",
     category: "Events",
-    content: "Tijdens de open campusdag kunnen leerlingen en ouders de school ontdekken, vragen stellen en de sfeer op de campussen voelen.",
+    content:
+      "Tijdens de open campusdag kunnen leerlingen en ouders de school ontdekken, vragen stellen en de sfeer op de campussen voelen.",
     image: require("../assets/school.webp"),
   },
   {
@@ -135,7 +137,8 @@ const news = [
     description: "De studiezoeker helpt leerlingen sneller kiezen.",
     date: "20 april 2026",
     category: "School",
-    content: "Met filters op interesse, campus en graad wordt het aanbod duidelijker voor toekomstige leerlingen.",
+    content:
+      "Met filters op interesse, campus en graad wordt het aanbod duidelijker voor toekomstige leerlingen.",
     image: require("../assets/school.webp"),
   },
   {
@@ -144,7 +147,8 @@ const news = [
     description: "Een actieve dag met verschillende sporten.",
     date: "18 maart 2026",
     category: "Events",
-    content: "De sportdag stond in teken van samenwerking, beweging en plezier tussen de leerlingen.",
+    content:
+      "De sportdag stond in teken van samenwerking, beweging en plezier tussen de leerlingen.",
     image: require("../assets/school.webp"),
   },
   {
@@ -153,7 +157,8 @@ const news = [
     description: "Leerlingen werkten rond gezonde keuzes.",
     date: "5 maart 2026",
     category: "Projecten",
-    content: "Het project combineerde theorie met praktische opdrachten rond voeding, beweging en welzijn.",
+    content:
+      "Het project combineerde theorie met praktische opdrachten rond voeding, beweging en welzijn.",
     image: require("../assets/school.webp"),
   },
   {
@@ -162,7 +167,8 @@ const news = [
     description: "De leerlingenraad verzamelt ideeen voor school.",
     date: "14 februari 2026",
     category: "School",
-    content: "Iedere campus kon voorstellen indienen om het schoolleven nog aangenamer te maken.",
+    content:
+      "Iedere campus kon voorstellen indienen om het schoolleven nog aangenamer te maken.",
     image: require("../assets/school.webp"),
   },
   {
@@ -171,7 +177,8 @@ const news = [
     description: "Experimenten en workshops voor leerlingen.",
     date: "30 januari 2026",
     category: "Projecten",
-    content: "Tijdens de wetenschapsweek leerden leerlingen onderzoekend werken in kleine teams.",
+    content:
+      "Tijdens de wetenschapsweek leerden leerlingen onderzoekend werken in kleine teams.",
     image: require("../assets/school.webp"),
   },
 ];
@@ -190,7 +197,8 @@ const campuses = [
     name: "Caputsteen",
     focus: "Integraal & creatief",
     address: "Caputsteenstraat 51, 2800 Mechelen",
-    description: "Bij BA Caputsteen is er veel aandacht voor creativiteit en brede vorming.",
+    description:
+      "Bij BA Caputsteen is er veel aandacht voor creativiteit en brede vorming.",
     color: "#2f66b3",
   },
   {
@@ -206,7 +214,8 @@ const campuses = [
     name: "Basisverpleegkunde",
     focus: "Verpleegkunde",
     address: "Jette en Mechelen",
-    description: "Na je studie behaal je het diploma van gegradueerde in de verpleegkunde.",
+    description:
+      "Na je studie behaal je het diploma van gegradueerde in de verpleegkunde.",
     color: "#d94f8c",
   },
   {
@@ -257,8 +266,14 @@ const HomeScreen = ({ navigation }) => {
   const [newsSortOption, setNewsSortOption] = useState("name-asc");
   const [showNews, setShowNews] = useState(true);
 
-  const categories = ["Alle", ...new Set(productsList.map((product) => product.category))];
-  const newsCategories = ["Alle", ...new Set(newsList.map((newsItem) => newsItem.category))];
+  const categories = [
+    "Alle",
+    ...new Set(productsList.map((product) => product.category)),
+  ];
+  const newsCategories = [
+    "Alle",
+    ...new Set(newsList.map((newsItem) => newsItem.category)),
+  ];
 
   useEffect(() => {
     fetchProducts()
@@ -341,7 +356,7 @@ const HomeScreen = ({ navigation }) => {
 
         <Button
           title="Open studiezoeker"
-          color="#1f4432"
+          color="#87BD25"
           onPress={() => navigation.navigate("StudyFinder")}
         />
       </View>
@@ -357,9 +372,7 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.emptyText}>Producten laden...</Text>
       ) : null}
 
-      {apiError ? (
-        <Text style={styles.errorText}>{apiError}</Text>
-      ) : null}
+      {apiError ? <Text style={styles.errorText}>{apiError}</Text> : null}
 
       <View style={styles.filterCard}>
         <Text style={styles.filterTitle}>Zoeken</Text>
@@ -396,16 +409,28 @@ const HomeScreen = ({ navigation }) => {
 
         <Text style={styles.filterTitle}>Sorteren</Text>
         <View style={styles.buttonRow}>
-          <Pressable style={styles.sortButton} onPress={() => setSortOption("name-asc")}>
+          <Pressable
+            style={styles.sortButton}
+            onPress={() => setSortOption("name-asc")}
+          >
             <Text style={styles.sortButtonText}>Naam A-Z</Text>
           </Pressable>
-          <Pressable style={styles.sortButton} onPress={() => setSortOption("name-desc")}>
+          <Pressable
+            style={styles.sortButton}
+            onPress={() => setSortOption("name-desc")}
+          >
             <Text style={styles.sortButtonText}>Naam Z-A</Text>
           </Pressable>
-          <Pressable style={styles.sortButton} onPress={() => setSortOption("price-asc")}>
+          <Pressable
+            style={styles.sortButton}
+            onPress={() => setSortOption("price-asc")}
+          >
             <Text style={styles.sortButtonText}>Prijs laag</Text>
           </Pressable>
-          <Pressable style={styles.sortButton} onPress={() => setSortOption("price-desc")}>
+          <Pressable
+            style={styles.sortButton}
+            onPress={() => setSortOption("price-desc")}
+          >
             <Text style={styles.sortButtonText}>Prijs hoog</Text>
           </Pressable>
         </View>
@@ -445,7 +470,7 @@ const HomeScreen = ({ navigation }) => {
         <Switch
           value={showNews}
           onValueChange={setShowNews}
-          trackColor={{ false: "#d1d5db", true: "#1f4432" }}
+          trackColor={{ false: "#d1d5db", true: "#87BD25" }}
           thumbColor="#ffffff"
         />
       </View>
@@ -476,7 +501,8 @@ const HomeScreen = ({ navigation }) => {
                   <Text
                     style={[
                       styles.filterButtonText,
-                      selectedNewsCategory === category && styles.activeButtonText,
+                      selectedNewsCategory === category &&
+                        styles.activeButtonText,
                     ]}
                   >
                     {category}
@@ -487,10 +513,16 @@ const HomeScreen = ({ navigation }) => {
 
             <Text style={styles.filterTitle}>Nieuws sorteren</Text>
             <View style={styles.buttonRow}>
-              <Pressable style={styles.sortButton} onPress={() => setNewsSortOption("name-asc")}>
+              <Pressable
+                style={styles.sortButton}
+                onPress={() => setNewsSortOption("name-asc")}
+              >
                 <Text style={styles.sortButtonText}>Naam A-Z</Text>
               </Pressable>
-              <Pressable style={styles.sortButton} onPress={() => setNewsSortOption("name-desc")}>
+              <Pressable
+                style={styles.sortButton}
+                onPress={() => setNewsSortOption("name-desc")}
+              >
                 <Text style={styles.sortButtonText}>Naam Z-A</Text>
               </Pressable>
             </View>
@@ -660,7 +692,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   activeButton: {
-    backgroundColor: "#1f4432",
+    backgroundColor: "#87BD25",
   },
   filterButtonText: {
     color: "#374151",

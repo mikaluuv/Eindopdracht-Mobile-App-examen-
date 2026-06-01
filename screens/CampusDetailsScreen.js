@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   address: {
-    color: "#1f4432",
+    color: "#87BD25",
     fontWeight: "700",
     marginBottom: 14,
   },

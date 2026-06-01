@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   activeButton: {
-    backgroundColor: "#1f4432",
+    backgroundColor: "#87BD25",
   },
   filterButtonText: {
     color: "#374151",

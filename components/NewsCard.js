@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   date: {
-    color: "#1f4432",
+    color: "#87BD25",
     fontSize: 11,
     fontWeight: "700",
   },

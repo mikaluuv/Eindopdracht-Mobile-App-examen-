@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   quantityButton: {
-    backgroundColor: "#1f4432",
+    backgroundColor: "#87BD25",
     width: 44,
     height: 44,
     borderRadius: 12,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     color: "#111827",
   },
   totalBox: {
-    backgroundColor: "#1f4432",
+    backgroundColor: "#87BD25",
     borderRadius: 14,
     padding: 14,
   },
