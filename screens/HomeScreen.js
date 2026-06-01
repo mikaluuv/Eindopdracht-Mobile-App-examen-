@@ -307,9 +307,9 @@ const HomeScreen = ({ navigation }) => {
         </Text>
 
         <Button
-          title="Start"
+          title="Open studiezoeker"
           color="#1f4432"
-          onPress={() => console.log("Start app")}
+          onPress={() => navigation.navigate("StudyFinder")}
         />
       </View>
 
