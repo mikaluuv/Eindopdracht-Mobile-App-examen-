@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import ProductCard from "../components/ProductCard";
 import NewsCard from "../components/NewsCard";
+import CampusCard from "../components/CampusCard";
 
 const products = [
   {
@@ -170,6 +171,73 @@ const news = [
     category: "Projecten",
     content: "Tijdens de wetenschapsweek leerden leerlingen onderzoekend werken in kleine teams.",
     image: require("../assets/school.webp"),
+  },
+];
+
+const campuses = [
+  {
+    id: 1,
+    name: "Botaniek",
+    focus: "Gezondheid & wetenschap",
+    address: "Augustijnenstraat 92, 2800 Mechelen",
+    description: "Bij BA Botaniek draait alles rond gezondheid en wetenschap.",
+    color: "#d94f8c",
+  },
+  {
+    id: 2,
+    name: "Caputsteen",
+    focus: "Integraal & creatief",
+    address: "Caputsteenstraat 51, 2800 Mechelen",
+    description: "Bij BA Caputsteen is er veel aandacht voor creativiteit en brede vorming.",
+    color: "#2f66b3",
+  },
+  {
+    id: 3,
+    name: "De Beemden",
+    focus: "Buiten-gewoon leren",
+    address: "Stuivenbergbaan 135, 2800 Mechelen",
+    description: "Bij BA De Beemden draait alles rond buiten-gewoon leren.",
+    color: "#57b6c9",
+  },
+  {
+    id: 4,
+    name: "Basisverpleegkunde",
+    focus: "Verpleegkunde",
+    address: "Jette en Mechelen",
+    description: "Na je studie behaal je het diploma van gegradueerde in de verpleegkunde.",
+    color: "#d94f8c",
+  },
+  {
+    id: 5,
+    name: "Nekkerspoel",
+    focus: "Werken & leren",
+    address: "Nekkerspoelstraat 74, 2800 Mechelen",
+    description: "Bij BA Nekkerspoel draait alles rond werken en leren.",
+    color: "#c8c94b",
+  },
+  {
+    id: 6,
+    name: "Pitzemburg",
+    focus: "Kennis & onderzoek",
+    address: "Bruul 129, 2800 Mechelen",
+    description: "Bij BA Pitzemburg draait alles rond kennis en onderzoek.",
+    color: "#a03c91",
+  },
+  {
+    id: 7,
+    name: "Stassart",
+    focus: "Mens & welzijn",
+    address: "Wollemarkt 36, 2800 Mechelen",
+    description: "Bij BA Stassart draait alles rond mens en welzijn.",
+    color: "#f0aa3c",
+  },
+  {
+    id: 8,
+    name: "Zandpoort",
+    focus: "IT & ondernemen",
+    address: "Zandpoortvest 9A, 2800 Mechelen",
+    description: "Bij BA Zandpoort draait alles rond IT en ondernemen.",
+    color: "#d94b3d",
   },
 ];
 
@@ -396,6 +464,30 @@ const HomeScreen = ({ navigation }) => {
       {filteredNews.length === 0 ? (
         <Text style={styles.emptyText}>Geen nieuws gevonden.</Text>
       ) : null}
+
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Campussen</Text>
+        <Text style={styles.sectionText}>
+          Een overzicht van de campussen van Busleyden Atheneum.
+        </Text>
+      </View>
+
+      <View style={styles.grid}>
+        {campuses.map((campus) => (
+          <CampusCard
+            key={campus.id}
+            name={campus.name}
+            focus={campus.focus}
+            address={campus.address}
+            color={campus.color}
+            onPress={() =>
+              navigation.navigate("CampusDetails", {
+                campus: campus,
+              })
+            }
+          />
+        ))}
+      </View>
     </ScrollView>
   );
 };
