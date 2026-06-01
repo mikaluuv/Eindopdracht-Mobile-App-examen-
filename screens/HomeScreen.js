@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   View,
@@ -14,6 +14,7 @@ import {
 import ProductCard from "../components/ProductCard";
 import NewsCard from "../components/NewsCard";
 import CampusCard from "../components/CampusCard";
+import { fetchCampuses, fetchNews, fetchProducts } from "../services/api";
 
 const products = [
   {
@@ -243,6 +244,11 @@ const campuses = [
 ];
 
 const HomeScreen = ({ navigation }) => {
+  const [productsList, setProductsList] = useState(products);
+  const [newsList, setNewsList] = useState(news);
+  const [campusesList, setCampusesList] = useState(campuses);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [apiError, setApiError] = useState("");
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Alle");
   const [sortOption, setSortOption] = useState("name-asc");
@@ -251,10 +257,35 @@ const HomeScreen = ({ navigation }) => {
   const [newsSortOption, setNewsSortOption] = useState("name-asc");
   const [showNews, setShowNews] = useState(true);
 
-  const categories = ["Alle", "Kleding", "Accessoires", "Sport", "Schoolmateriaal", "Tech"];
-  const newsCategories = ["Alle", "Events", "School", "Projecten"];
+  const categories = ["Alle", ...new Set(productsList.map((product) => product.category))];
+  const newsCategories = ["Alle", ...new Set(newsList.map((newsItem) => newsItem.category))];
 
-  const filteredProducts = products
+  useEffect(() => {
+    fetchProducts()
+      .then((data) => {
+        setProductsList(data);
+        setApiError("");
+        setIsLoadingProducts(false);
+      })
+      .catch((error) => {
+        setApiError(error.message);
+        setIsLoadingProducts(false);
+      });
+
+    fetchNews()
+      .then((data) => {
+        setNewsList(data);
+      })
+      .catch(() => {});
+
+    fetchCampuses()
+      .then((data) => {
+        setCampusesList(data);
+      })
+      .catch(() => {});
+  }, []);
+
+  const filteredProducts = productsList
     .filter((product) =>
       product.title.toLowerCase().includes(searchText.toLowerCase()),
     )
@@ -273,7 +304,7 @@ const HomeScreen = ({ navigation }) => {
       return 0;
     });
 
-  const filteredNews = news
+  const filteredNews = newsList
     .filter((newsItem) =>
       newsItem.title.toLowerCase().includes(newsSearchText.toLowerCase()),
     )
@@ -299,7 +330,7 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.smallText}>Mechelen</Text>
       </View>
 
-      <Image source={require("../assets/school.webp")} style={styles.image} />
+      <Image source={require("../assets/home.png")} style={styles.image} />
 
       <View style={styles.card}>
         <Text style={styles.title}>Welkom bij BA</Text>
@@ -321,6 +352,14 @@ const HomeScreen = ({ navigation }) => {
           Zoek, filter en sorteer producten uit de schoolshop.
         </Text>
       </View>
+
+      {isLoadingProducts ? (
+        <Text style={styles.emptyText}>Producten laden...</Text>
+      ) : null}
+
+      {apiError ? (
+        <Text style={styles.errorText}>{apiError}</Text>
+      ) : null}
 
       <View style={styles.filterCard}>
         <Text style={styles.filterTitle}>Zoeken</Text>
@@ -489,7 +528,7 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.grid}>
-        {campuses.map((campus) => (
+        {campusesList.map((campus) => (
           <CampusCard
             key={campus.id}
             name={campus.name}
@@ -646,6 +685,12 @@ const styles = StyleSheet.create({
     color: "#6b7280",
     textAlign: "center",
     marginTop: 10,
+  },
+  errorText: {
+    color: "#b91c1c",
+    textAlign: "center",
+    marginBottom: 10,
+    fontWeight: "700",
   },
 });
 

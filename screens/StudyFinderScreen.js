@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, StyleSheet, Pressable } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { fetchStudies } from "../services/api";
 
 const studies = [
   {
@@ -48,13 +49,22 @@ const studies = [
 ];
 
 const StudyFinderScreen = ({ navigation }) => {
+  const [studiesList, setStudiesList] = useState(studies);
   const [selectedInterest, setSelectedInterest] = useState("Alle");
   const [selectedGrade, setSelectedGrade] = useState("Alle");
 
-  const interests = ["Alle", "Zorg", "Wetenschap", "Economie", "Sport", "IT"];
-  const grades = ["Alle", "2de graad", "3de graad"];
+  const interests = ["Alle", ...new Set(studiesList.map((study) => study.interest))];
+  const grades = ["Alle", ...new Set(studiesList.map((study) => study.grade))];
 
-  const filteredStudies = studies
+  useEffect(() => {
+    fetchStudies()
+      .then((data) => {
+        setStudiesList(data);
+      })
+      .catch(() => {});
+  }, []);
+
+  const filteredStudies = studiesList
     .filter((study) => {
       if (selectedInterest === "Alle") {
         return true;
