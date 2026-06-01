@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   View,
@@ -7,6 +7,8 @@ import {
   StyleSheet,
   Image,
   Button,
+  TextInput,
+  Pressable,
 } from "react-native";
 import ProductCard from "../components/ProductCard";
 
@@ -41,9 +43,104 @@ const products = [
     details: "Handige turnzak voor sportkledij, schoenen en kleine spullen.",
     image: require("../assets/school.webp"),
   },
+  {
+    id: 4,
+    title: "T-shirt BA",
+    description: "Comfortabel T-shirt voor activiteiten op school.",
+    price: "EUR 18",
+    priceNumber: 18,
+    category: "Kleding",
+    details: "Een eenvoudig T-shirt met een herkenbare Busleyden stijl.",
+    image: require("../assets/school.webp"),
+  },
+  {
+    id: 5,
+    title: "Totebag",
+    description: "Stevige tas voor boeken en schoolmateriaal.",
+    price: "EUR 10",
+    priceNumber: 10,
+    category: "Accessoires",
+    details: "Handige draagtas voor elke dag op de campus.",
+    image: require("../assets/school.webp"),
+  },
+  {
+    id: 6,
+    title: "Schriftenset",
+    description: "Set met drie schriften voor de lessen.",
+    price: "EUR 8",
+    priceNumber: 8,
+    category: "Schoolmateriaal",
+    details: "Praktische schriften voor notities, taken en oefeningen.",
+    image: require("../assets/school.webp"),
+  },
+  {
+    id: 7,
+    title: "Pennenset",
+    description: "Set met blauwe en zwarte pennen.",
+    price: "EUR 6",
+    priceNumber: 6,
+    category: "Schoolmateriaal",
+    details: "Een kleine basisset die elke leerling kan gebruiken.",
+    image: require("../assets/school.webp"),
+  },
+  {
+    id: 8,
+    title: "Sportshirt",
+    description: "Licht shirt voor de lessen LO.",
+    price: "EUR 20",
+    priceNumber: 20,
+    category: "Sport",
+    details: "Sportshirt dat comfortabel zit tijdens sportactiviteiten.",
+    image: require("../assets/school.webp"),
+  },
+  {
+    id: 9,
+    title: "Laptophoes",
+    description: "Beschermhoes voor laptop of tablet.",
+    price: "EUR 24",
+    priceNumber: 24,
+    category: "Tech",
+    details: "Beschermt je toestel onderweg naar school.",
+    image: require("../assets/school.webp"),
+  },
+  {
+    id: 10,
+    title: "Oortjes",
+    description: "Handig voor digitale lessen en opdrachten.",
+    price: "EUR 14",
+    priceNumber: 14,
+    category: "Tech",
+    details: "Compacte oortjes voor video, audio en online lessen.",
+    image: require("../assets/school.webp"),
+  },
 ];
 
 const HomeScreen = ({ navigation }) => {
+  const [searchText, setSearchText] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Alle");
+  const [sortOption, setSortOption] = useState("name-asc");
+
+  const categories = ["Alle", "Kleding", "Accessoires", "Sport", "Schoolmateriaal", "Tech"];
+
+  const filteredProducts = products
+    .filter((product) =>
+      product.title.toLowerCase().includes(searchText.toLowerCase()),
+    )
+    .filter((product) => {
+      if (selectedCategory === "Alle") {
+        return true;
+      }
+
+      return product.category === selectedCategory;
+    })
+    .sort((a, b) => {
+      if (sortOption === "name-asc") return a.title.localeCompare(b.title);
+      if (sortOption === "name-desc") return b.title.localeCompare(a.title);
+      if (sortOption === "price-asc") return a.priceNumber - b.priceNumber;
+      if (sortOption === "price-desc") return b.priceNumber - a.priceNumber;
+      return 0;
+    });
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <StatusBar style="dark" />
@@ -71,11 +168,63 @@ const HomeScreen = ({ navigation }) => {
 
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Webshop</Text>
-        <Text style={styles.sectionText}>Een paar producten uit de schoolshop.</Text>
+        <Text style={styles.sectionText}>
+          Zoek, filter en sorteer producten uit de schoolshop.
+        </Text>
+      </View>
+
+      <View style={styles.filterCard}>
+        <Text style={styles.filterTitle}>Zoeken</Text>
+        <TextInput
+          placeholder="Zoek product..."
+          placeholderTextColor="#8b7f76"
+          value={searchText}
+          onChangeText={setSearchText}
+          style={styles.search}
+        />
+
+        <Text style={styles.filterTitle}>Categorie</Text>
+        <View style={styles.buttonRow}>
+          {categories.map((category) => (
+            <Pressable
+              key={category}
+              style={[
+                styles.filterButton,
+                selectedCategory === category && styles.activeButton,
+              ]}
+              onPress={() => setSelectedCategory(category)}
+            >
+              <Text
+                style={[
+                  styles.filterButtonText,
+                  selectedCategory === category && styles.activeButtonText,
+                ]}
+              >
+                {category}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+
+        <Text style={styles.filterTitle}>Sorteren</Text>
+        <View style={styles.buttonRow}>
+          <Pressable style={styles.sortButton} onPress={() => setSortOption("name-asc")}>
+            <Text style={styles.sortButtonText}>Naam A-Z</Text>
+          </Pressable>
+          <Pressable style={styles.sortButton} onPress={() => setSortOption("name-desc")}>
+            <Text style={styles.sortButtonText}>Naam Z-A</Text>
+          </Pressable>
+          <Pressable style={styles.sortButton} onPress={() => setSortOption("price-asc")}>
+            <Text style={styles.sortButtonText}>Prijs laag</Text>
+          </Pressable>
+          <Pressable style={styles.sortButton} onPress={() => setSortOption("price-desc")}>
+            <Text style={styles.sortButtonText}>Prijs hoog</Text>
+          </Pressable>
+        </View>
       </View>
 
       <View style={styles.grid}>
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <ProductCard
             key={product.id}
             title={product.title}
@@ -91,6 +240,10 @@ const HomeScreen = ({ navigation }) => {
           />
         ))}
       </View>
+
+      {filteredProducts.length === 0 ? (
+        <Text style={styles.emptyText}>Geen producten gevonden.</Text>
+      ) : null}
     </ScrollView>
   );
 };
@@ -161,6 +314,67 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
+  },
+  filterCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 20,
+    padding: 14,
+    marginBottom: 18,
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+  },
+  filterTitle: {
+    color: "#111827",
+    fontSize: 14,
+    fontWeight: "800",
+    marginBottom: 8,
+  },
+  search: {
+    backgroundColor: "#f3f4f6",
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderRadius: 14,
+    color: "#111827",
+    marginBottom: 14,
+  },
+  buttonRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginBottom: 14,
+  },
+  filterButton: {
+    backgroundColor: "#f3f4f6",
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 12,
+  },
+  activeButton: {
+    backgroundColor: "#1f4432",
+  },
+  filterButtonText: {
+    color: "#374151",
+    fontWeight: "700",
+    fontSize: 12,
+  },
+  activeButtonText: {
+    color: "#ffffff",
+  },
+  sortButton: {
+    backgroundColor: "#e5e7eb",
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 12,
+  },
+  sortButtonText: {
+    color: "#111827",
+    fontWeight: "700",
+    fontSize: 12,
+  },
+  emptyText: {
+    color: "#6b7280",
+    textAlign: "center",
+    marginTop: 10,
   },
 });
 
