@@ -9,6 +9,7 @@ import {
   Button,
   TextInput,
   Pressable,
+  Switch,
 } from "react-native";
 import ProductCard from "../components/ProductCard";
 import NewsCard from "../components/NewsCard";
@@ -248,6 +249,7 @@ const HomeScreen = ({ navigation }) => {
   const [newsSearchText, setNewsSearchText] = useState("");
   const [selectedNewsCategory, setSelectedNewsCategory] = useState("Alle");
   const [newsSortOption, setNewsSortOption] = useState("name-asc");
+  const [showNews, setShowNews] = useState(true);
 
   const categories = ["Alle", "Kleding", "Accessoires", "Sport", "Schoolmateriaal", "Tech"];
   const newsCategories = ["Alle", "Events", "School", "Projecten"];
@@ -399,70 +401,84 @@ const HomeScreen = ({ navigation }) => {
         </Text>
       </View>
 
-      <View style={styles.filterCard}>
-        <Text style={styles.filterTitle}>Nieuws zoeken</Text>
-        <TextInput
-          placeholder="Zoek nieuws..."
-          placeholderTextColor="#8b7f76"
-          value={newsSearchText}
-          onChangeText={setNewsSearchText}
-          style={styles.search}
+      <View style={styles.switchCard}>
+        <Text style={styles.filterTitle}>Nieuws tonen</Text>
+        <Switch
+          value={showNews}
+          onValueChange={setShowNews}
+          trackColor={{ false: "#d1d5db", true: "#1f4432" }}
+          thumbColor="#ffffff"
         />
-
-        <Text style={styles.filterTitle}>Nieuws categorie</Text>
-        <View style={styles.buttonRow}>
-          {newsCategories.map((category) => (
-            <Pressable
-              key={category}
-              style={[
-                styles.filterButton,
-                selectedNewsCategory === category && styles.activeButton,
-              ]}
-              onPress={() => setSelectedNewsCategory(category)}
-            >
-              <Text
-                style={[
-                  styles.filterButtonText,
-                  selectedNewsCategory === category && styles.activeButtonText,
-                ]}
-              >
-                {category}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
-
-        <Text style={styles.filterTitle}>Nieuws sorteren</Text>
-        <View style={styles.buttonRow}>
-          <Pressable style={styles.sortButton} onPress={() => setNewsSortOption("name-asc")}>
-            <Text style={styles.sortButtonText}>Naam A-Z</Text>
-          </Pressable>
-          <Pressable style={styles.sortButton} onPress={() => setNewsSortOption("name-desc")}>
-            <Text style={styles.sortButtonText}>Naam Z-A</Text>
-          </Pressable>
-        </View>
       </View>
 
-      <View style={styles.grid}>
-        {filteredNews.map((newsItem) => (
-          <NewsCard
-            key={newsItem.id}
-            title={newsItem.title}
-            description={newsItem.description}
-            date={newsItem.date}
-            category={newsItem.category}
-            image={newsItem.image}
-            onPress={() =>
-              navigation.navigate("NewsDetails", {
-                newsItem: newsItem,
-              })
-            }
-          />
-        ))}
-      </View>
+      {showNews ? (
+        <>
+          <View style={styles.filterCard}>
+            <Text style={styles.filterTitle}>Nieuws zoeken</Text>
+            <TextInput
+              placeholder="Zoek nieuws..."
+              placeholderTextColor="#8b7f76"
+              value={newsSearchText}
+              onChangeText={setNewsSearchText}
+              style={styles.search}
+            />
 
-      {filteredNews.length === 0 ? (
-        <Text style={styles.emptyText}>Geen nieuws gevonden.</Text>
+            <Text style={styles.filterTitle}>Nieuws categorie</Text>
+            <View style={styles.buttonRow}>
+              {newsCategories.map((category) => (
+                <Pressable
+                  key={category}
+                  style={[
+                    styles.filterButton,
+                    selectedNewsCategory === category && styles.activeButton,
+                  ]}
+                  onPress={() => setSelectedNewsCategory(category)}
+                >
+                  <Text
+                    style={[
+                      styles.filterButtonText,
+                      selectedNewsCategory === category && styles.activeButtonText,
+                    ]}
+                  >
+                    {category}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+
+            <Text style={styles.filterTitle}>Nieuws sorteren</Text>
+            <View style={styles.buttonRow}>
+              <Pressable style={styles.sortButton} onPress={() => setNewsSortOption("name-asc")}>
+                <Text style={styles.sortButtonText}>Naam A-Z</Text>
+              </Pressable>
+              <Pressable style={styles.sortButton} onPress={() => setNewsSortOption("name-desc")}>
+                <Text style={styles.sortButtonText}>Naam Z-A</Text>
+              </Pressable>
+            </View>
+          </View>
+
+          <View style={styles.grid}>
+            {filteredNews.map((newsItem) => (
+              <NewsCard
+                key={newsItem.id}
+                title={newsItem.title}
+                description={newsItem.description}
+                date={newsItem.date}
+                category={newsItem.category}
+                image={newsItem.image}
+                onPress={() =>
+                  navigation.navigate("NewsDetails", {
+                    newsItem: newsItem,
+                  })
+                }
+              />
+            ))}
+          </View>
+
+          {filteredNews.length === 0 ? (
+            <Text style={styles.emptyText}>Geen nieuws gevonden.</Text>
+          ) : null}
+        </>
       ) : null}
 
       <View style={styles.sectionHeader}>
@@ -566,6 +582,17 @@ const styles = StyleSheet.create({
     marginBottom: 18,
     borderWidth: 1,
     borderColor: "#e5e7eb",
+  },
+  switchCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 20,
+    padding: 14,
+    marginBottom: 14,
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   filterTitle: {
     color: "#111827",
