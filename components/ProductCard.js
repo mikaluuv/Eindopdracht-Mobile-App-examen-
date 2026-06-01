@@ -1,9 +1,16 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 
-export default function ProductCard({ title, description, price, category, image }) {
+export default function ProductCard({
+  title,
+  description,
+  price,
+  category,
+  image,
+  onPress,
+}) {
   return (
-    <Pressable style={styles.card}>
+    <Pressable style={styles.card} onPress={onPress}>
       <Image source={image} style={styles.image} />
 
       <View style={styles.content}>

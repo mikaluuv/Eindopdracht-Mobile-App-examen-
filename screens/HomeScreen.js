@@ -16,7 +16,9 @@ const products = [
     title: "Schoolhoodie BA",
     description: "Warme hoodie met Busleyden Atheneum logo.",
     price: "EUR 35",
+    priceNumber: 35,
     category: "Kleding",
+    details: "Deze hoodie is ideaal voor schooldagen, uitstappen en sportieve activiteiten.",
     image: require("../assets/school.webp"),
   },
   {
@@ -24,7 +26,9 @@ const products = [
     title: "Drinkbus",
     description: "Herbruikbare drinkbus voor elke schooldag.",
     price: "EUR 12",
+    priceNumber: 12,
     category: "Accessoires",
+    details: "Een lichte drinkbus die gemakkelijk in je boekentas past.",
     image: require("../assets/school.webp"),
   },
   {
@@ -32,12 +36,14 @@ const products = [
     title: "Turnzak",
     description: "Praktische sportzak voor de lessen LO.",
     price: "EUR 15",
+    priceNumber: 15,
     category: "Sport",
+    details: "Handige turnzak voor sportkledij, schoenen en kleine spullen.",
     image: require("../assets/school.webp"),
   },
 ];
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <StatusBar style="dark" />
@@ -77,6 +83,11 @@ const HomeScreen = () => {
             price={product.price}
             category={product.category}
             image={product.image}
+            onPress={() =>
+              navigation.navigate("ProductDetails", {
+                product: product,
+              })
+            }
           />
         ))}
       </View>
