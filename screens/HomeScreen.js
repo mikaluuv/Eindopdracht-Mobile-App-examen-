@@ -177,8 +177,12 @@ const HomeScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Alle");
   const [sortOption, setSortOption] = useState("name-asc");
+  const [newsSearchText, setNewsSearchText] = useState("");
+  const [selectedNewsCategory, setSelectedNewsCategory] = useState("Alle");
+  const [newsSortOption, setNewsSortOption] = useState("name-asc");
 
   const categories = ["Alle", "Kleding", "Accessoires", "Sport", "Schoolmateriaal", "Tech"];
+  const newsCategories = ["Alle", "Events", "School", "Projecten"];
 
   const filteredProducts = products
     .filter((product) =>
@@ -196,6 +200,23 @@ const HomeScreen = ({ navigation }) => {
       if (sortOption === "name-desc") return b.title.localeCompare(a.title);
       if (sortOption === "price-asc") return a.priceNumber - b.priceNumber;
       if (sortOption === "price-desc") return b.priceNumber - a.priceNumber;
+      return 0;
+    });
+
+  const filteredNews = news
+    .filter((newsItem) =>
+      newsItem.title.toLowerCase().includes(newsSearchText.toLowerCase()),
+    )
+    .filter((newsItem) => {
+      if (selectedNewsCategory === "Alle") {
+        return true;
+      }
+
+      return newsItem.category === selectedNewsCategory;
+    })
+    .sort((a, b) => {
+      if (newsSortOption === "name-asc") return a.title.localeCompare(b.title);
+      if (newsSortOption === "name-desc") return b.title.localeCompare(a.title);
       return 0;
     });
 
@@ -306,12 +327,56 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Nieuws</Text>
         <Text style={styles.sectionText}>
-          Laatste berichten van Busleyden Atheneum.
+          Zoek, filter en sorteer nieuwsartikelen.
         </Text>
       </View>
 
+      <View style={styles.filterCard}>
+        <Text style={styles.filterTitle}>Nieuws zoeken</Text>
+        <TextInput
+          placeholder="Zoek nieuws..."
+          placeholderTextColor="#8b7f76"
+          value={newsSearchText}
+          onChangeText={setNewsSearchText}
+          style={styles.search}
+        />
+
+        <Text style={styles.filterTitle}>Nieuws categorie</Text>
+        <View style={styles.buttonRow}>
+          {newsCategories.map((category) => (
+            <Pressable
+              key={category}
+              style={[
+                styles.filterButton,
+                selectedNewsCategory === category && styles.activeButton,
+              ]}
+              onPress={() => setSelectedNewsCategory(category)}
+            >
+              <Text
+                style={[
+                  styles.filterButtonText,
+                  selectedNewsCategory === category && styles.activeButtonText,
+                ]}
+              >
+                {category}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+
+        <Text style={styles.filterTitle}>Nieuws sorteren</Text>
+        <View style={styles.buttonRow}>
+          <Pressable style={styles.sortButton} onPress={() => setNewsSortOption("name-asc")}>
+            <Text style={styles.sortButtonText}>Naam A-Z</Text>
+          </Pressable>
+          <Pressable style={styles.sortButton} onPress={() => setNewsSortOption("name-desc")}>
+            <Text style={styles.sortButtonText}>Naam Z-A</Text>
+          </Pressable>
+        </View>
+      </View>
+
       <View style={styles.grid}>
-        {news.map((newsItem) => (
+        {filteredNews.map((newsItem) => (
           <NewsCard
             key={newsItem.id}
             title={newsItem.title}
@@ -327,6 +392,10 @@ const HomeScreen = ({ navigation }) => {
           />
         ))}
       </View>
+
+      {filteredNews.length === 0 ? (
+        <Text style={styles.emptyText}>Geen nieuws gevonden.</Text>
+      ) : null}
     </ScrollView>
   );
 };
