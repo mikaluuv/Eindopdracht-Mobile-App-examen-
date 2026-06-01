@@ -11,6 +11,7 @@ import {
   Pressable,
 } from "react-native";
 import ProductCard from "../components/ProductCard";
+import NewsCard from "../components/NewsCard";
 
 const products = [
   {
@@ -111,6 +112,63 @@ const products = [
     priceNumber: 14,
     category: "Tech",
     details: "Compacte oortjes voor video, audio en online lessen.",
+    image: require("../assets/school.webp"),
+  },
+];
+
+const news = [
+  {
+    id: 1,
+    title: "Open campusdag",
+    description: "Kom kennismaken met onze campussen en richtingen.",
+    date: "12 mei 2026",
+    category: "Events",
+    content: "Tijdens de open campusdag kunnen leerlingen en ouders de school ontdekken, vragen stellen en de sfeer op de campussen voelen.",
+    image: require("../assets/school.webp"),
+  },
+  {
+    id: 2,
+    title: "Nieuwe studiezoeker",
+    description: "De studiezoeker helpt leerlingen sneller kiezen.",
+    date: "20 april 2026",
+    category: "School",
+    content: "Met filters op interesse, campus en graad wordt het aanbod duidelijker voor toekomstige leerlingen.",
+    image: require("../assets/school.webp"),
+  },
+  {
+    id: 3,
+    title: "Sportdag derde graad",
+    description: "Een actieve dag met verschillende sporten.",
+    date: "18 maart 2026",
+    category: "Events",
+    content: "De sportdag stond in teken van samenwerking, beweging en plezier tussen de leerlingen.",
+    image: require("../assets/school.webp"),
+  },
+  {
+    id: 4,
+    title: "Project gezondheid",
+    description: "Leerlingen werkten rond gezonde keuzes.",
+    date: "5 maart 2026",
+    category: "Projecten",
+    content: "Het project combineerde theorie met praktische opdrachten rond voeding, beweging en welzijn.",
+    image: require("../assets/school.webp"),
+  },
+  {
+    id: 5,
+    title: "Leerlingenraad start actie",
+    description: "De leerlingenraad verzamelt ideeen voor school.",
+    date: "14 februari 2026",
+    category: "School",
+    content: "Iedere campus kon voorstellen indienen om het schoolleven nog aangenamer te maken.",
+    image: require("../assets/school.webp"),
+  },
+  {
+    id: 6,
+    title: "Wetenschapsweek",
+    description: "Experimenten en workshops voor leerlingen.",
+    date: "30 januari 2026",
+    category: "Projecten",
+    content: "Tijdens de wetenschapsweek leerden leerlingen onderzoekend werken in kleine teams.",
     image: require("../assets/school.webp"),
   },
 ];
@@ -244,6 +302,31 @@ const HomeScreen = ({ navigation }) => {
       {filteredProducts.length === 0 ? (
         <Text style={styles.emptyText}>Geen producten gevonden.</Text>
       ) : null}
+
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Nieuws</Text>
+        <Text style={styles.sectionText}>
+          Laatste berichten van Busleyden Atheneum.
+        </Text>
+      </View>
+
+      <View style={styles.grid}>
+        {news.map((newsItem) => (
+          <NewsCard
+            key={newsItem.id}
+            title={newsItem.title}
+            description={newsItem.description}
+            date={newsItem.date}
+            category={newsItem.category}
+            image={newsItem.image}
+            onPress={() =>
+              navigation.navigate("NewsDetails", {
+                newsItem: newsItem,
+              })
+            }
+          />
+        ))}
+      </View>
     </ScrollView>
   );
 };
